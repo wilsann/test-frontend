@@ -31,6 +31,10 @@ function ItemList() {
     navigate(`/admin/items/edit/${id}`); // ✅ Redirect ke halaman edit
   };
 
+  const handleCreate = (id) => {
+    navigate(`/admin/items/create`); // ✅ Redirect ke halaman create
+  };
+
   const handleDeleteClick = (id, name) => {
     setSelectedId(id);
     setSelectedName(name);
@@ -51,6 +55,7 @@ function ItemList() {
   return (
     <div>
       <h2>Daftar Item</h2>
+      <button onClick={() => handleCreate()} style={styles.btnCreate}>Create</button>
       {loading ? (
         <p>Memuat data...</p>
       ) : (
@@ -60,6 +65,9 @@ function ItemList() {
               <th>ID</th>
               <th>Nama</th>
               <th>Deskripsi</th>
+              <th>Genre</th>
+              <th>Year</th>
+              <th>Director</th>
               <th>Dibuat</th>
               <th>Diubah</th>
               <th>Aksi</th>
@@ -71,6 +79,9 @@ function ItemList() {
                 <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{item.description}</td>
+                <td>{item.genre}</td>
+                <td>{item.year}</td>
+                <td>{item.director}</td>
                 <td>{new Date(item.created_at).toLocaleString()}</td>
                 <td>{new Date(item.updated_at).toLocaleString()}</td>
                 <td>
@@ -109,6 +120,15 @@ const styles = {
     color: "white",
     border: "none",
     padding: "6px 12px",
+    borderRadius: "4px",
+    cursor: "pointer",
+  },
+  btnCreate: {
+    backgroundColor: "#4c66afff",
+    color: "white",
+    border: "none",
+    padding: "6px 12px",
+    marginRight: "8px",
     borderRadius: "4px",
     cursor: "pointer",
   },
