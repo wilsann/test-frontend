@@ -5,7 +5,7 @@ import api from "../../services/api";
 function EditUser() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState({ username: "", email: "", role_id: 1 });
+  const [user, setUser] = useState({ username: "", email: "", role_id: 1, password: "" });
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +19,7 @@ function EditUser() {
           username: userRes.data.username,
           email: userRes.data.email,
           role_id: userRes.data.role_id || 1,
+          password: "",
         });
         setRoles(rolesRes.data);
       } catch (err) {
@@ -32,11 +33,21 @@ function EditUser() {
   }, [id]);
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    if (e.target.name === "role_id") {
+      setUser({ ...user, [e.target.name]: parseInt(e.target.value, 10) });
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const payload = { ...user };
+    if (!payload.password) {
+      delete payload.password;
+    }
+
     try {
       await api.put(`/users/${id}`, user);
       alert("User updated successfully!");
@@ -63,6 +74,16 @@ function EditUser() {
           <input type="email" name="email" value={user.email} onChange={handleChange} required />
         </label>
         <br />
+        <label>
+          Password (kosongkan jika tidak ingin ubah):
+          <input
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Kosongkan jika tidak diubah"
+          />
+        </label>
         <label>
           Role:
           <select name="role_id" value={user.role_id} onChange={handleChange}>

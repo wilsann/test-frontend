@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import api from "../../services/api";
 import ConfirmModal from "../../components/ConfirmModal";
 
@@ -8,6 +9,8 @@ function ItemList() {
   const [showModal, setShowModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [selectedName, setSelectedName] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +27,10 @@ function ItemList() {
     fetchData();
   }, []);
 
+  const handleEdit = (id) => {
+    navigate(`/admin/items/edit/${id}`); // ✅ Redirect ke halaman edit
+  };
+
   const handleDeleteClick = (id, name) => {
     setSelectedId(id);
     setSelectedName(name);
@@ -39,11 +46,6 @@ function ItemList() {
     } finally {
       setShowModal(false);
     }
-  };
-
-  const handleEdit = (id) => {
-    // Implementasi edit, misalnya redirect ke halaman edit
-    alert(`Edit item ID: ${id}`);
   };
 
   return (
@@ -72,9 +74,7 @@ function ItemList() {
                 <td>{new Date(item.created_at).toLocaleString()}</td>
                 <td>{new Date(item.updated_at).toLocaleString()}</td>
                 <td>
-                  <button onClick={() => handleEdit(item.id)} style={styles.btnEdit}>
-                    Edit
-                  </button>
+                  <button onClick={() => handleEdit(item.id)} style={styles.btnEdit}>Edit</button>
                   <button onClick={() => handleDeleteClick(item.id, item.name)} style={styles.btnDelete}>
                     Hapus
                   </button>

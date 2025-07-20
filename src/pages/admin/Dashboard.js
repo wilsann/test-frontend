@@ -1,13 +1,18 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
+import LogoutButton from "../../components/LogoutButton";
 
 function Dashboard() {
   return (
     <div style={styles.container}>
       <Sidebar />
       <div style={styles.content}>
-        <Outlet /> {/* Tempat konten dinamis: ItemList atau UserList */}
+        <div style={styles.header}>
+          <h2>Admin Dashboard</h2>
+          <LogoutButton />
+        </div>
+        <Outlet />
       </div>
     </div>
   );
@@ -21,6 +26,11 @@ const styles = {
   content: {
     flex: 1,
     padding: "20px",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 };
 
