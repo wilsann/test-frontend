@@ -35,10 +35,12 @@ function ItemList() {
 
   const handleDeleteConfirm = async () => {
     try {
-      await api.deleteItem(selectedId);
+      await api.delete(`/items/${selectedId}`); // Gunakan method delete biasa
       setItems(items.filter((item) => item.id !== selectedId));
+      alert('Item berhasil dihapus');
     } catch (err) {
-      console.error(err);
+      console.error('Error deleting item:', err);
+      alert('Gagal menghapus item');
     } finally {
       setShowModal(false);
     }
@@ -63,7 +65,7 @@ function ItemList() {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                {['ID', 'Nama', 'Deskripsi', 'Genre', 'Year', 'Director', 'Dibuat', 'Diubah', 'Aksi'].map((header) => (
+                {['No', 'Name', 'Description', 'Genre', 'Year', 'Director', 'Created At', 'Updated At', 'Action'].map((header) => (
                   <th 
                     key={header}
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
@@ -74,9 +76,9 @@ function ItemList() {
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{item.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{item.name}</td>
                   <td className="px-6 py-4 text-sm text-gray-800 dark:text-gray-200 max-w-xs truncate">{item.description}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{item.genre}</td>

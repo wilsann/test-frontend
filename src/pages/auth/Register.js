@@ -26,9 +26,9 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">Register</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+      <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-sm w-full text-center">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">Register</h2>
         <form onSubmit={handleRegister} className="space-y-4">
           <input
             type="text"

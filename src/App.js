@@ -10,6 +10,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import ItemList from "./pages/admin/ItemList";
 import UserList from "./pages/admin/UserList";
 import EditUser from "./pages/admin/EditUser";
+import CreateUser from "./pages/admin/CreateUser";
 import EditItemPage from "./pages/EditItemPage";
 import CreateItemPage from "./pages/CreateItemPage";
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="items/create" element={<CreateItemPage />} />
           <Route path="items/edit/:id" element={<EditItemPage />} />
           <Route path="users" element={<UserList />} />
+          <Route path="/admin/users/create" element={<CreateUser />} />
           <Route path="users/edit/:id" element={<EditUser />} />
         </Route>
 

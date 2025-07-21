@@ -15,11 +15,16 @@ function UserDashboard() {
   const [filterYear, setFilterYear] = useState("");
   const [categories, setCategories] = useState([]);
   const [years, setYears] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18;
 
   useEffect(() => {
+    // Check user's preferred color scheme
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(prefersDark);
+    
     const fetchMovies = async () => {
       const params = new URLSearchParams();
       if (searchQuery) params.append("name", searchQuery);
@@ -69,18 +74,31 @@ function UserDashboard() {
     setCurrentPage(page);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   const role = isAdmin() ? "admin" : "user";
   if (role === "admin") {
     return <Navigate to="/admin" />;
   }
 
   return (
-    <div className="p-5"> {/* Refactored container style */}
+    <div className={`min-h-screen p-5 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="flex justify-between items-center mb-5">
         <h2 className="text-2xl font-bold">Movie Catalog</h2>
-        <LogoutButton />
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={toggleDarkMode}
+            className={`px-3 py-1 rounded-md ${darkMode ? 'bg-gray-700 text-yellow-300' : 'bg-gray-200 text-gray-700'}`}
+          >
+            {darkMode ? '☀️ Light' : '🌙 Dark'}
+          </button>
+          <LogoutButton />
+        </div>
       </div>
-      <SearchBar onSearch={setSearchQuery} />
+      
+      <SearchBar onSearch={setSearchQuery} darkMode={darkMode} />
       <FilterBar
         categories={categories}
         years={years}
@@ -88,21 +106,30 @@ function UserDashboard() {
           setFilterCategory(cat);
           setFilterYear(year);
         }}
+        darkMode={darkMode}
       />
 
-      <div className="grid grid-cols- md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center"> {/* Refactored cardContainer to a responsive grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 justify-items-center">
         {currentMovies.length > 0 ? (
-          currentMovies.map((movie) => <ItemCard key={movie.id} item={movie} />)
+          currentMovies.map((movie) => (
+            <ItemCard key={movie.id} item={movie} darkMode={darkMode} />
+          ))
         ) : (
-          <p className="col-span-full text-center">Tidak ada film ditemukan</p>
+          <p className="col-span-full text-center py-10">
+            Tidak ada film ditemukan
+          </p>
         )}
       </div>
+      
       {totalPages > 1 && (
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+        <div className="mt-8 flex justify-center">
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            darkMode={darkMode}
+          />
+        </div>
       )}
     </div>
   );
