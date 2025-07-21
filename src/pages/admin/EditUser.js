@@ -61,41 +61,67 @@ function EditUser() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div style={{ maxWidth: "500px", margin: "20px auto" }}>
-      <h2>Edit User</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input type="text" name="username" value={user.username} onChange={handleChange} required />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="email" name="email" value={user.email} onChange={handleChange} required />
-        </label>
-        <br />
-        <label>
-          Password (kosongkan jika tidak ingin ubah):
+    <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md mt-6">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Edit User</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-gray-700 dark:text-gray-300 mb-1">Username</label>
+          <input
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 dark:text-gray-300 mb-1">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 dark:text-gray-300 mb-1">Password (kosongkan jika tidak ingin ubah)</label>
           <input
             type="password"
             name="password"
             value={user.password}
             onChange={handleChange}
             placeholder="Kosongkan jika tidak diubah"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
           />
-        </label>
-        <label>
-          Role:
-          <select name="role_id" value={user.role_id} onChange={handleChange}>
+        </div>
+
+        <div>
+          <label className="block text-gray-700 dark:text-gray-300 mb-1">Role</label>
+          <select
+            name="role_id"
+            value={user.role_id}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+          >
             {roles.map((role) => (
               <option key={role.id} value={role.id}>
                 {role.name}
               </option>
             ))}
           </select>
-        </label>
-        <br />
-        <button type="submit">Update User</button>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300"
+        >
+          Update User
+        </button>
       </form>
     </div>
   );

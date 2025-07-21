@@ -27,14 +27,6 @@ function ItemList() {
     fetchData();
   }, []);
 
-  const handleEdit = (id) => {
-    navigate(`/admin/items/edit/${id}`); // ✅ Redirect ke halaman edit
-  };
-
-  const handleCreate = (id) => {
-    navigate(`/admin/items/create`); // ✅ Redirect ke halaman create
-  };
-
   const handleDeleteClick = (id, name) => {
     setSelectedId(id);
     setSelectedName(name);
@@ -53,48 +45,70 @@ function ItemList() {
   };
 
   return (
-    <div>
-      <h2>Daftar Item</h2>
-      <button onClick={() => handleCreate()} style={styles.btnCreate}>Create</button>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Daftar Item</h2>
+        <button 
+          onClick={() => navigate('/admin/items/create')}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition duration-300"
+        >
+          Create New
+        </button>
+      </div>
+
       {loading ? (
-        <p>Memuat data...</p>
+        <p className="text-gray-600 dark:text-gray-400">Memuat data...</p>
       ) : (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nama</th>
-              <th>Deskripsi</th>
-              <th>Genre</th>
-              <th>Year</th>
-              <th>Director</th>
-              <th>Dibuat</th>
-              <th>Diubah</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.description}</td>
-                <td>{item.genre}</td>
-                <td>{item.year}</td>
-                <td>{item.director}</td>
-                <td>{new Date(item.created_at).toLocaleString()}</td>
-                <td>{new Date(item.updated_at).toLocaleString()}</td>
-                <td>
-                  <button onClick={() => handleEdit(item.id)} style={styles.btnEdit}>Edit</button>
-                  <button onClick={() => handleDeleteClick(item.id, item.name)} style={styles.btnDelete}>
-                    Hapus
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                {['ID', 'Nama', 'Deskripsi', 'Genre', 'Year', 'Director', 'Dibuat', 'Diubah', 'Aksi'].map((header) => (
+                  <th 
+                    key={header}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                  >
+                    {header}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {items.map((item) => (
+                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{item.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{item.name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-800 dark:text-gray-200 max-w-xs truncate">{item.description}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{item.genre}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{item.year}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{item.director}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                    {new Date(item.created_at).toLocaleString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                    {new Date(item.updated_at).toLocaleString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => navigate(`/admin/items/edit/${item.id}`)}
+                      className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(item.id, item.name)}
+                      className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
+
       <ConfirmModal
         show={showModal}
         onClose={() => setShowModal(false)}
@@ -105,33 +119,5 @@ function ItemList() {
   );
 }
 
-const styles = {
-  btnEdit: {
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    padding: "6px 12px",
-    marginRight: "8px",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  btnDelete: {
-    backgroundColor: "#f44336",
-    color: "white",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  btnCreate: {
-    backgroundColor: "#4c66afff",
-    color: "white",
-    border: "none",
-    padding: "6px 12px",
-    marginRight: "8px",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-};
 
 export default ItemList;

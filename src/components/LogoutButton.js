@@ -11,21 +11,13 @@ function LogoutButton() {
   };
 
   return (
-    <button onClick={handleLogout} style={styles.button}>
+    <button
+      onClick={handleLogout}
+      className="p-2.5 px-5 bg-red-500 text-white border-none rounded-md cursor-pointer" // [cite: 9, 10] Refactored button styles
+    >
       Logout
     </button>
   );
 }
-
-const styles = {
-  button: {
-    padding: "10px 20px",
-    backgroundColor: "#f44336",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-};
 
 export default LogoutButton;

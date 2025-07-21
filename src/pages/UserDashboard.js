@@ -9,7 +9,7 @@ import { isAdmin } from "../services/authService";
 import LogoutButton from "../components/LogoutButton";
 
 function UserDashboard() {
-  const [movies, setMovies] = useState([]); // ✅ Tetap array kosong
+  const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterYear, setFilterYear] = useState("");
@@ -17,7 +17,7 @@ function UserDashboard() {
   const [years, setYears] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 18;
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -28,12 +28,12 @@ function UserDashboard() {
 
       try {
         const res = await api.get(`/items?${params.toString()}`);
-        const data = res.data || []; // ✅ Pastikan data adalah array
+        const data = res.data || [];
         setMovies(data);
-        setCurrentPage(1); // Reset halaman ke 1 setiap filter berubah
+        setCurrentPage(1);
       } catch (err) {
         console.error("Error fetching movies:", err);
-        setMovies([]); // ✅ Set ke array kosong jika error
+        setMovies([]);
       }
     };
 
@@ -65,7 +65,6 @@ function UserDashboard() {
   const indexOfLast = currentPage * itemsPerPage;
   const currentMovies = movies.slice(indexOfLast - itemsPerPage, indexOfLast);
   const totalPages = Math.ceil(movies.length / itemsPerPage);
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -76,9 +75,11 @@ function UserDashboard() {
   }
 
   return (
-    <div style={styles.container}>
-      <h2>Movie Catalog</h2>
-      <LogoutButton />
+    <div className="p-5"> {/* Refactored container style */}
+      <div className="flex justify-between items-center mb-5">
+        <h2 className="text-2xl font-bold">Movie Catalog</h2>
+        <LogoutButton />
+      </div>
       <SearchBar onSearch={setSearchQuery} />
       <FilterBar
         categories={categories}
@@ -88,11 +89,12 @@ function UserDashboard() {
           setFilterYear(year);
         }}
       />
-      <div style={styles.cardContainer}>
+
+      <div className="grid grid-cols- md:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center"> {/* Refactored cardContainer to a responsive grid */}
         {currentMovies.length > 0 ? (
           currentMovies.map((movie) => <ItemCard key={movie.id} item={movie} />)
         ) : (
-          <p>Tidak ada film ditemukan</p>
+          <p className="col-span-full text-center">Tidak ada film ditemukan</p>
         )}
       </div>
       {totalPages > 1 && (
@@ -105,16 +107,5 @@ function UserDashboard() {
     </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: "20px",
-  },
-  cardContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-};
 
 export default UserDashboard;

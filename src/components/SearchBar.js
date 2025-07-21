@@ -1,32 +1,20 @@
 import React from "react";
 
-function SearchBar({ onSearch }) {
-  const handleChange = (e) => {
-    onSearch(e.target.value);
+function SearchBar({ onSearch }) { // [cite: 21]
+  const handleChange = (e) => { // [cite: 21]
+    onSearch(e.target.value); 
   };
 
   return (
-    <div style={styles.container}>
+    <div className="mb-5 text-center"> {/* [cite: 22, 23] Refactored container style */}
       <input
         type="text"
         placeholder="Cari item berdasarkan nama..."
         onChange={handleChange}
-        style={styles.input}
+        className="w-4/5 p-2.5 text-base border border-gray-300 rounded-md" // [cite: 22, 23] Refactored input style
       />
     </div>
   );
 }
-
-const styles = {
-  container: {
-    marginBottom: "20px",
-    textAlign: "center"
-  },
-  input: {
-    width: "80%",
-    padding: "10px",
-    fontSize: "16px"
-  }
-};
 
 export default SearchBar;
