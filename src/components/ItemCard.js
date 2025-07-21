@@ -1,25 +1,38 @@
 import React from "react";
 
 function ItemCard({ item }) {
-  const handleImageError = (e) => {
-    e.target.onerror = null; // Prevent infinite loop
-    e.target.src = ""; // Clear the broken image
-    e.target.style.display = "none"; // Hide the image element
-  };
+  const getImageUrl = (imagePath) => {
+  if (!imagePath) return null;
+  
+  // Jika sudah berupa URL lengkap
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+  
+  // Gabungkan dengan base URL - sesuaikan dengan backend Anda
+  return `http://localhost:8080/uploads/${imagePath}`;
+};
+
+  const imageUrl = getImageUrl(item.image);
 
   return (
     <div style={styles.card}>
       <div style={styles.imageContainer}>
-        {item.image ? (
+        {imageUrl ? (
           <img 
-            src={item.image} 
+            src={imageUrl} 
             alt={item.name} 
             style={styles.image}
-            onError={handleImageError}
+            onError={(e) => {
+              // Jika gambar gagal load, sembunyikan element img
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
           />
-        ) : (
-          <div style={styles.noImage}>No Image</div>
-        )}
+        ) : null}
+        <div style={{...styles.noImage, display: imageUrl ? 'none' : 'flex'}}>
+          <span>No Image</span>
+        </div>
       </div>
       <h3>{item.name}</h3>
       <p>{item.description}</p>
